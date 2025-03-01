@@ -1,7 +1,7 @@
 from functools import wraps
 
 
-def log(filename):
+def log(filename=None):
     """ Декоратор, который логирует начало и конец выполнения функции, а также ее результаты и ошибки"""
     def log_decorator(func):
         @wraps(func)
@@ -14,12 +14,11 @@ def log(filename):
                 else:
                     print(f"{func.__name__} ok")
                 return result
-            except TypeError:
+            except Exception:
                 if filename is not None:
                     with open(filename, "a") as file:
-                        file.write(f"{func.__name__} error: TypeError. Inputs: {args}, {kwargs}")
+                        file.write(f"{func.__name__} error: Exception. Inputs: {args}, {kwargs}")
                 else:
-                    print(f"{func.__name__} error: TypeError. Inputs: {args}, {kwargs}")
-                raise TypeError
+                    print(f"{func.__name__} error: Exception. Inputs: {args}, {kwargs}")
         return wrapper
     return log_decorator
